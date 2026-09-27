@@ -1,0 +1,413 @@
+================================================================================
+  HASH TABLE USING THE DIVISION METHOD      h(k) = k mod m
+  Collision resolution: linear probing (open addressing)
+================================================================================
+  data file   : input/song_ids.txt
+  song IDs    : 105 210 315 420 525 630 735 840
+  query IDs   : 105 420 735 840 111 500 999 1000
+================================================================================
+  TABLE SIZE m = 12          alpha = n/m = 8/12 = 0.667
+
+================================================================================
+  PART (a)  INSERTION TRACE  (division method + linear probing)
+================================================================================
+     Division method  h(k) = k mod 12
+     +------+--------+-------------+
+     |  key |  h(k)  |   status     |
+     +------+--------+-------------+
+     |  105 |    9   | home slot   |
+     |  210 |    6   | home slot   |
+     |  315 |    3   | home slot   |
+     |  420 |    0   | home slot   |
+     |  525 |    9   | home slot   |
+     |  630 |    6   | home slot   |
+     |  735 |    3   | home slot   |
+     |  840 |    0   | home slot   |
+     +------+--------+-------------+
+
+  [1] Insert  105 : h(105) = 105 mod 12 =  9  ->  slot  9  |  probes = 1  |  no collision
+     table state after inserting 105  (inserted 1 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |   -  |    -   |    -  |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |   -  |    -   |    -  |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |   -  |    -   |    -  |
+     |   7  |   -  |    -   |    -  |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |   -  |    -   |    -  |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [2] Insert  210 : h(210) = 210 mod 12 =  6  ->  slot  6  |  probes = 1  |  no collision
+     table state after inserting 210  (inserted 2 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |   -  |    -   |    -  |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |   -  |    -   |    -  |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |   -  |    -   |    -  |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |   -  |    -   |    -  |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [3] Insert  315 : h(315) = 315 mod 12 =  3  ->  slot  3  |  probes = 1  |  no collision
+     table state after inserting 315  (inserted 3 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |   -  |    -   |    -  |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |   -  |    -   |    -  |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |   -  |    -   |    -  |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [4] Insert  420 : h(420) = 420 mod 12 =  0  ->  slot  0  |  probes = 1  |  no collision
+     table state after inserting 420  (inserted 4 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  420 |    0   |   1   |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |   -  |    -   |    -  |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |   -  |    -   |    -  |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [5] Insert  525 : h(525) = 525 mod 12 =  9  ->  slot 10  |  probes = 2  |  *** COLLISION ***
+     table state after inserting 525  (inserted 5 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  420 |    0   |   1   |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |   -  |    -   |    -  |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |  525 |    9   |   2   |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [6] Insert  630 : h(630) = 630 mod 12 =  6  ->  slot  7  |  probes = 2  |  *** COLLISION ***
+     table state after inserting 630  (inserted 6 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  420 |    0   |   1   |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |   -  |    -   |    -  |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |  630 |    6   |   2   |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |  525 |    9   |   2   |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [7] Insert  735 : h(735) = 735 mod 12 =  3  ->  slot  4  |  probes = 2  |  *** COLLISION ***
+     table state after inserting 735  (inserted 7 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  420 |    0   |   1   |
+     |   1  |   -  |    -   |    -  |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |  735 |    3   |   2   |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |  630 |    6   |   2   |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |  525 |    9   |   2   |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+  [8] Insert  840 : h(840) = 840 mod 12 =  0  ->  slot  1  |  probes = 2  |  *** COLLISION ***
+     table state after inserting 840  (inserted 8 of 8)
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  420 |    0   |   1   |
+     |   1  |  840 |    0   |   2   |
+     |   2  |   -  |    -   |    -  |
+     |   3  |  315 |    3   |   1   |
+     |   4  |  735 |    3   |   2   |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  210 |    6   |   1   |
+     |   7  |  630 |    6   |   2   |
+     |   8  |   -  |    -   |    -  |
+     |   9  |  105 |    9   |   1   |
+     |  10  |  525 |    9   |   2   |
+     |  11  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+
+  Insertion summary for m = 12
+    keys inserted          : 8
+    collisions             : 4 (keys needed a probe sequence)
+    total probes to build  : 12
+    average probes / key   : 1.50
+    primary clusters       : 4
+    longest cluster        : 2 slots
+
+================================================================================
+  PART (b)  SEARCH COMPARISON  (hashing  vs  linear search)
+================================================================================
+     key    | in data   | linear search (comparisons) | hashing (probes)         
+     -------+-----------+-----------------------------+--------------------------
+     105    | present   |  1  FOUND  (idx 0)          |  1  FOUND  (home  9)     
+     420    | present   |  4  FOUND  (idx 3)          |  1  FOUND  (home  0)     
+     735    | present   |  7  FOUND  (idx 6)          |  2  FOUND  (home  3)     
+     840    | present   |  8  FOUND  (idx 7)          |  2  FOUND  (home  0)     
+     111    | ABSENT    |  8  not found (idx -1)      |  3  not found (home  3)  
+     500    | ABSENT    |  8  not found (idx -1)      |  1  not found (home  8)  
+     999    | ABSENT    |  8  not found (idx -1)      |  3  not found (home  3)  
+     1000   | ABSENT    |  8  not found (idx -1)      |  2  not found (home  4)  
+     -------+-----------+-----------------------------+--------------------------
+     TOTAL  |           |                             |                          
+            |           | 52                          | 15                       
+            | AVERAGE   | 6.50                        | 1.88                     
+            | SAVING    |                             | 37                       
+
+  Both routines returned the same verdict for all 8 queries.
+
+================================================================================
+  PART (c)  COLLISION IMPACT AND LOAD FACTOR
+================================================================================
+  load factor      alpha = n / m = 8 / 12 = 0.667
+  slots filled     8 of 12 (66.7% occupied)
+  collisions       4  ->  linear probing was invoked, lengthening the probe sequences
+  longest cluster  2 slots -> a search starting at the head of that
+                    cluster needs up to 2 probes.
+  avg hash probes  1.88 per query  (ideal = 1.00, i.e. hit on the home slot)
+  avg linear cmps  6.50 per query  (n/2 = 4.50 for a random hit on an
+                    unsorted array of 8 keys)
+  speed-up         3.47x fewer operations than linear search
+
+================================================================================
+  TABLE SIZE m = 11          alpha = n/m = 8/11 = 0.727
+
+================================================================================
+  PART (a)  INSERTION TRACE  (division method + linear probing)
+================================================================================
+     Division method  h(k) = k mod 11
+     +------+--------+-------------+
+     |  key |  h(k)  |   status     |
+     +------+--------+-------------+
+     |  105 |    6   | home slot   |
+     |  210 |    1   | home slot   |
+     |  315 |    7   | home slot   |
+     |  420 |    2   | home slot   |
+     |  525 |    8   | home slot   |
+     |  630 |    3   | home slot   |
+     |  735 |    9   | home slot   |
+     |  840 |    4   | home slot   |
+     +------+--------+-------------+
+
+  [1] Insert  105 : h(105) = 105 mod 11 =  6  ->  slot  6  |  probes = 1  |  no collision
+  [2] Insert  210 : h(210) = 210 mod 11 =  1  ->  slot  1  |  probes = 1  |  no collision
+  [3] Insert  315 : h(315) = 315 mod 11 =  7  ->  slot  7  |  probes = 1  |  no collision
+  [4] Insert  420 : h(420) = 420 mod 11 =  2  ->  slot  2  |  probes = 1  |  no collision
+  [5] Insert  525 : h(525) = 525 mod 11 =  8  ->  slot  8  |  probes = 1  |  no collision
+  [6] Insert  630 : h(630) = 630 mod 11 =  3  ->  slot  3  |  probes = 1  |  no collision
+  [7] Insert  735 : h(735) = 735 mod 11 =  9  ->  slot  9  |  probes = 1  |  no collision
+  [8] Insert  840 : h(840) = 840 mod 11 =  4  ->  slot  4  |  probes = 1  |  no collision
+
+     final table state
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |   -  |    -   |    -  |
+     |   1  |  210 |    1   |   1   |
+     |   2  |  420 |    2   |   1   |
+     |   3  |  630 |    3   |   1   |
+     |   4  |  840 |    4   |   1   |
+     |   5  |   -  |    -   |    -  |
+     |   6  |  105 |    6   |   1   |
+     |   7  |  315 |    7   |   1   |
+     |   8  |  525 |    8   |   1   |
+     |   9  |  735 |    9   |   1   |
+     |  10  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+
+  Insertion summary for m = 11
+    keys inserted          : 8
+    collisions             : 0 (perfect distribution)
+    total probes to build  : 8
+    average probes / key   : 1.00
+    primary clusters       : 2
+    longest cluster        : 4 slots
+
+================================================================================
+  PART (b)  SEARCH COMPARISON  (hashing  vs  linear search)
+================================================================================
+     key    | in data   | linear search (comparisons) | hashing (probes)         
+     -------+-----------+-----------------------------+--------------------------
+     105    | present   |  1  FOUND  (idx 0)          |  1  FOUND  (home  6)     
+     420    | present   |  4  FOUND  (idx 3)          |  1  FOUND  (home  2)     
+     735    | present   |  7  FOUND  (idx 6)          |  1  FOUND  (home  9)     
+     840    | present   |  8  FOUND  (idx 7)          |  1  FOUND  (home  4)     
+     111    | ABSENT    |  8  not found (idx -1)      |  5  not found (home  1)  
+     500    | ABSENT    |  8  not found (idx -1)      |  1  not found (home  5)  
+     999    | ABSENT    |  8  not found (idx -1)      |  2  not found (home  9)  
+     1000   | ABSENT    |  8  not found (idx -1)      |  1  not found (home 10)  
+     -------+-----------+-----------------------------+--------------------------
+     TOTAL  |           |                             |                          
+            |           | 52                          | 13                       
+            | AVERAGE   | 6.50                        | 1.62                     
+            | SAVING    |                             | 39                       
+
+  Both routines returned the same verdict for all 8 queries.
+
+================================================================================
+  PART (c)  COLLISION IMPACT AND LOAD FACTOR
+================================================================================
+  load factor      alpha = n / m = 8 / 11 = 0.727
+  slots filled     8 of 11 (72.7% occupied)
+  collisions       0  ->  every song ID landed in its own home slot
+  longest cluster  4 slots -> a search starting at the head of that
+                    cluster needs up to 4 probes.
+  avg hash probes  1.62 per query  (ideal = 1.00, i.e. hit on the home slot)
+  avg linear cmps  6.50 per query  (n/2 = 4.50 for a random hit on an
+                    unsorted array of 8 keys)
+  speed-up         4.00x fewer operations than linear search
+
+================================================================================
+  TABLE SIZE m = 21          alpha = n/m = 8/21 = 0.381
+
+================================================================================
+  PART (a)  INSERTION TRACE  (division method + linear probing)
+================================================================================
+     Division method  h(k) = k mod 21
+     +------+--------+-------------+
+     |  key |  h(k)  |   status     |
+     +------+--------+-------------+
+     |  105 |    0   | home slot   |
+     |  210 |    0   | home slot   |
+     |  315 |    0   | home slot   |
+     |  420 |    0   | home slot   |
+     |  525 |    0   | home slot   |
+     |  630 |    0   | home slot   |
+     |  735 |    0   | home slot   |
+     |  840 |    0   | home slot   |
+     +------+--------+-------------+
+
+  [1] Insert  105 : h(105) = 105 mod 21 =  0  ->  slot  0  |  probes = 1  |  no collision
+  [2] Insert  210 : h(210) = 210 mod 21 =  0  ->  slot  1  |  probes = 2  |  *** COLLISION ***
+  [3] Insert  315 : h(315) = 315 mod 21 =  0  ->  slot  2  |  probes = 3  |  *** COLLISION ***
+  [4] Insert  420 : h(420) = 420 mod 21 =  0  ->  slot  3  |  probes = 4  |  *** COLLISION ***
+  [5] Insert  525 : h(525) = 525 mod 21 =  0  ->  slot  4  |  probes = 5  |  *** COLLISION ***
+  [6] Insert  630 : h(630) = 630 mod 21 =  0  ->  slot  5  |  probes = 6  |  *** COLLISION ***
+  [7] Insert  735 : h(735) = 735 mod 21 =  0  ->  slot  6  |  probes = 7  |  *** COLLISION ***
+  [8] Insert  840 : h(840) = 840 mod 21 =  0  ->  slot  7  |  probes = 8  |  *** COLLISION ***
+
+     final table state
+     +------+------+--------+-------+
+     |  idx |  key |  home  | probe |
+     +------+------+--------+-------+
+     |   0  |  105 |    0   |   1   |
+     |   1  |  210 |    0   |   2   |
+     |   2  |  315 |    0   |   3   |
+     |   3  |  420 |    0   |   4   |
+     |   4  |  525 |    0   |   5   |
+     |   5  |  630 |    0   |   6   |
+     |   6  |  735 |    0   |   7   |
+     |   7  |  840 |    0   |   8   |
+     |   8  |   -  |    -   |    -  |
+     |   9  |   -  |    -   |    -  |
+     |  10  |   -  |    -   |    -  |
+     |  11  |   -  |    -   |    -  |
+     |  12  |   -  |    -   |    -  |
+     |  13  |   -  |    -   |    -  |
+     |  14  |   -  |    -   |    -  |
+     |  15  |   -  |    -   |    -  |
+     |  16  |   -  |    -   |    -  |
+     |  17  |   -  |    -   |    -  |
+     |  18  |   -  |    -   |    -  |
+     |  19  |   -  |    -   |    -  |
+     |  20  |   -  |    -   |    -  |
+     +------+------+--------+-------+
+
+  Insertion summary for m = 21
+    keys inserted          : 8
+    collisions             : 7 (keys needed a probe sequence)
+    total probes to build  : 36
+    average probes / key   : 4.50
+    primary clusters       : 1
+    longest cluster        : 8 slots
+
+================================================================================
+  PART (b)  SEARCH COMPARISON  (hashing  vs  linear search)
+================================================================================
+     key    | in data   | linear search (comparisons) | hashing (probes)         
+     -------+-----------+-----------------------------+--------------------------
+     105    | present   |  1  FOUND  (idx 0)          |  1  FOUND  (home  0)     
+     420    | present   |  4  FOUND  (idx 3)          |  4  FOUND  (home  0)     
+     735    | present   |  7  FOUND  (idx 6)          |  7  FOUND  (home  0)     
+     840    | present   |  8  FOUND  (idx 7)          |  8  FOUND  (home  0)     
+     111    | ABSENT    |  8  not found (idx -1)      |  3  not found (home  6)  
+     500    | ABSENT    |  8  not found (idx -1)      |  1  not found (home 17)  
+     999    | ABSENT    |  8  not found (idx -1)      |  1  not found (home 12)  
+     1000   | ABSENT    |  8  not found (idx -1)      |  1  not found (home 13)  
+     -------+-----------+-----------------------------+--------------------------
+     TOTAL  |           |                             |                          
+            |           | 52                          | 26                       
+            | AVERAGE   | 6.50                        | 3.25                     
+            | SAVING    |                             | 26                       
+
+  Both routines returned the same verdict for all 8 queries.
+
+================================================================================
+  PART (c)  COLLISION IMPACT AND LOAD FACTOR
+================================================================================
+  load factor      alpha = n / m = 8 / 21 = 0.381
+  slots filled     8 of 21 (38.1% occupied)
+  collisions       7  ->  linear probing was invoked, lengthening the probe sequences
+  longest cluster  8 slots -> a search starting at the head of that
+                    cluster needs up to 8 probes.
+  avg hash probes  3.25 per query  (ideal = 1.00, i.e. hit on the home slot)
+  avg linear cmps  6.50 per query  (n/2 = 4.50 for a random hit on an
+                    unsorted array of 8 keys)
+  speed-up         2.00x fewer operations than linear search
+
+================================================================================
+  OVERALL COMPARISON OF THE THREE TABLE SIZES
+================================================================================
+   m     | alpha   | collis.  | avg probes  | max clust | avg linear   | speed-up  
+   ------+---------+----------+-------------+-----------+--------------+-----------
+   12    | 0.667   | 4        | 1.88        | 2         | 6.50         | 3.47     x
+   11    | 0.727   | 0        | 1.62        | 4         | 6.50         | 4.00     x
+   21    | 0.381   | 7        | 3.25        | 8         | 6.50         | 2.00     x
+   ------+---------+----------+-------------+-----------+--------------+-----------
+
+         | linear search is the same for every table size: 52 comparisons in total.
+         | hashing wins at every table size, but the winning margin depends on
+         | how the song IDs are distributed - not on the load factor alone.

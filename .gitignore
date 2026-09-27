@@ -1,0 +1,10 @@
+# build artefacts
+build/
+*.exe
+*.o
+
+# editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

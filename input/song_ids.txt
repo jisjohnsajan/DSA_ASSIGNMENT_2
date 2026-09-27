@@ -1,0 +1,33 @@
+# ============================================================================
+#  Music Application - Song ID Data Set
+#  DSA Assignment - Hash Table using the Division Method
+#
+#  Format
+#    [SONGS]    -> the 8 song IDs stored in the music application
+#    [QUERIES]  -> song IDs submitted for search (part b)
+#                   * 4 IDs that ARE present in the table
+#                   * 4 IDs that are NOT present (failed searches)
+#  Lines beginning with '#' are comments and are ignored.
+# ============================================================================
+
+[SONGS]
+105
+210
+315
+420
+525
+630
+735
+840
+
+[QUERIES]
+# ---- present song IDs (successful searches) ----
+105
+420
+735
+840
+# ---- absent song IDs (unsuccessful searches) ----
+111
+500
+999
+1000
